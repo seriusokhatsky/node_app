@@ -1,4 +1,5 @@
 var express = require("express"),
+	bodyParser = require("body-parser"),
 	app = express();
 
 console.log(app);
@@ -17,6 +18,10 @@ var store = {
 		title: "Contact Me",
 		content: "You can find me home"
 	},
+	todos: {
+		title: "TODOs",
+		content: "JustDoIt!"
+	},
 	weather: {
 		title: "Weather",
 		content: '\
@@ -30,24 +35,43 @@ var store = {
 		content: 'enter information'
 	}
 },
-keysStore = Object.keys(store);
+keysStore = Object.keys(store),
+todos = new Array();
 
 app.use(function(req, res, next) {
 	console.log('%s %s', req.method, req.url);
 	next()
 });
 
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.set('view engine', 'jade');
 
 app.use(express.static(__dirname + '/public'));
 
 
-app.get('/newtodo', function(req, res) {
-	data = store.newtodo;
-	data.links = keysStore;
-	data.current = 'newtodo';
-	res.render('new', data);
-});
+app.get('/todos', function(req, res) {
+		data = store.todos;
+		data.links = keysStore;
+		data.current = 'todos';
+		data.todos = todos;
+		res.render('todos', data);
+	});
+
+app.route('/newtodo')
+	.get(function(req, res) {
+		data = store.newtodo;
+		data.links = keysStore;
+		data.current = 'newtodo';
+		res.render('new', data);
+	})
+	.post(function(req, res) {
+		data = req.body;
+		if( data.title ) {
+			todos.push(data.title);
+		}
+		res.redirect('/todos');
+	});
 
 app.get('/:page?', function(req, res) {
 	var page = req.params.page;
