@@ -2,6 +2,8 @@ extends layout.jade
 block content
 	h3= content
 	
-	ul
+	ul.list-group
 		each todo in todos
-			li= todo
+			li.list-group-item= todo
+				a.pull-right(href="/remove/" + todo)
+					span.lyphicon.glyphicon-search(aria-hidden="true") remove

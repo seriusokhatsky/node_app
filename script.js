@@ -1,5 +1,6 @@
 var express = require("express"),
 	bodyParser = require("body-parser"),
+	fs = require('fs'),
 	app = express();
 
 console.log(app);
@@ -35,8 +36,16 @@ var store = {
 		content: 'enter information'
 	}
 },
+todosFile = 'todos.txt',
 keysStore = Object.keys(store),
 todos = new Array();
+
+fs.readFile(todosFile, function (err, data) {
+  if (err) throw err;
+  if(data.toString() != '') {
+	  todos = JSON.parse(data);
+  }
+});
 
 app.use(function(req, res, next) {
 	console.log('%s %s', req.method, req.url);
@@ -70,6 +79,27 @@ app.route('/newtodo')
 		if( data.title ) {
 			todos.push(data.title);
 		}
+		fs.writeFile(todosFile, JSON.stringify(todos), function (err) {
+		  if (err) throw err;
+		  console.log('It\'s saved!');
+		});
+		res.redirect('/todos');
+	});
+
+app.route('/remove/:remove')
+	.get(function(req, res) {
+		var remove = req.params.remove;
+		var index = todos.indexOf(remove);
+		if (index > -1) {
+		    todos.splice(index, 1);
+		}
+		fs.writeFile(todosFile, JSON.stringify(todos), function (err) {
+		  if (err) throw err;
+		  console.log('It\'s saved!');
+		});
+		data = store.newtodo;
+		data.links = keysStore;
+		data.current = 'newtodo';
 		res.redirect('/todos');
 	});
 
