@@ -1,0 +1,22 @@
+doctype
+html
+	title= title
+	meta(charset='utf-8')
+	link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
+body
+	.container
+		h1
+			a(href="/")="MY APP"
+		h3= title
+		hr
+		ul.nav.nav-pills
+			each link in links
+				if current == link
+					li.active
+						a(href= link)= link
+				else
+					li
+						a(href= link)= link
+					
+		hr
+		p!= content
