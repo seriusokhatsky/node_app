@@ -6,19 +6,18 @@ var express = require("express"),
 
 console.log(app);
 
-
 var store = {
 	home: {
 		title: "Home page title",
 		content: "Welcome to my new Express APPlication"
 	},
-	korr: {
-		title: "korr",
-		content: "Korrespondent news"
-	},
 	contacts: {
 		title: "Contact Me",
 		content: "You can find me home"
+	},
+	korr: {
+		title: "Новини з України",
+		content: "Korrespondent news"
 	},
 	todos: {
 		title: "TODOs",
@@ -31,10 +30,6 @@ var store = {
 				<hr>\
 				<div id="SinoptikInformer" style="width:350px;" class="SinoptikInformer type5"><div class="siHeader"><div class="siLh"><div class="siMh"><a onmousedown="siClickCount();" href="https://ua.sinoptik.ua/" target="_blank">Погода</a><a onmousedown="siClickCount();" class="siLogo" href="https://ua.sinoptik.ua/" target="_blank"> </a> <span id="siHeader"></span></div></div></div><div class="siBody"><table><tbody><tr><td class="siCityV" style="width:100%;"><div class="siCityName"><a onmousedown="siClickCount();" href="https://ua.sinoptik.ua/погода-умань" target="_blank">Погода в <span>Умані</span></a></div></tr><tr><td style="width:100%;"><div class="siCityV2"><div id="siCont0" class="siBodyContent"><div class="siLeft"><div class="siTerm"></div><div class="siT" id="siT0"></div><div id="weatherIco0"></div></div><div class="siInf"><p>вологість: <span id="vl0"></span></p><p>тиск: <span id="dav0"></span></p><p>вітер: <span id="wind0"></span></p></div></div></div></td></tr></tbody></table><div class="siLinks"><span><a onmousedown="siClickCount();" href="https://ua.sinoptik.ua/погода-кременчук" target="_blank">Погода у Кременчуці</a>&nbsp;</span><span><a onmousedown="siClickCount();" href="https://ua.sinoptik.ua/погода-мелітополь" target="_blank">Погода у Мелітополі</a>&nbsp;</span></div></div><div class="siFooter"><div class="siLf"><div class="siMf"></div></div></div></div><script type="text/javascript" charset="UTF-8" src="//sinoptik.ua/informers_js.php?title=4&amp;wind=2&amp;cities=303027480&amp;lang=ua"></script>\
 			'
-	},
-	newtodo: {
-		title: 'Add new TODO',
-		content: 'enter information'
 	}
 },
 todosFile = 'todos.txt',
@@ -72,7 +67,6 @@ app.get('/todos', function(req, res) {
 app.get('/korr', function(req, res) {
 		feed(rssUrl, function(err, articles) {
 		  if (err) throw err;
-		  	console.log(articles);
 			data = store.korr;
 			data.links = keysStore;
 			data.current = 'korr';
@@ -82,12 +76,6 @@ app.get('/korr', function(req, res) {
 	});
 
 app.route('/newtodo')
-	.get(function(req, res) {
-		data = store.newtodo;
-		data.links = keysStore;
-		data.current = 'newtodo';
-		res.render('new', data);
-	})
 	.post(function(req, res) {
 		data = req.body;
 		if( data.title ) {

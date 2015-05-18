@@ -1,9 +1,17 @@
 extends layout.jade
 block content
-	h3= content
-	
-	ul.list-group
-		each todo in todos
-			li.list-group-item= todo
-				a.pull-right(href="/remove/" + todo)
-					span.lyphicon.glyphicon-search(aria-hidden="true") remove
+	.row
+		.col-md-6
+			label(for="title") TODOs list 
+			ul.list-group
+				each todo in todos
+					li.list-group-item= todo
+						a.pull-right(href="/remove/" + todo)
+							span.lyphicon.glyphicon-search(aria-hidden="true") remove
+		.col-md-6
+			form(action="/newtodo" method="post").form
+				.form-group
+					label(for="title") TODO title 
+					input.form-control(type="text" name="title" placeholder="Enter Title") 
+				button.btn.btn-default(type="submit") Add TODO to the list 
+

@@ -8,7 +8,8 @@
     "express": "^4.12.3",
     "feed-read": "0.0.1",
     "fs": "0.0.2",
-    "jade": "^1.9.2"
+    "jade": "^1.9.2",
+    "node-sass": "^3.1.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

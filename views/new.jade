@@ -1,9 +1,0 @@
-extends layout.jade
-block content
-	h3 Fill In this form
-
-	form(action="/newtodo" method="post").form-inline
-		.form-group
-			label(for="title") TODO title 
-			input.form-control(type="text" name="title" placeholder="Enter Title") 
-		button.btn.btn-default(type="submit") Add TODO to the list 
