@@ -1,0 +1,12 @@
+extends layout.jade
+block content
+	h4 RSS for news
+
+	.row
+		.col-md-6
+			each article in articles
+				article.list-group
+					.list-group-item.clearfix
+						h3.media-heading= article.title
+						p!= article.content
+						a(href= article.link target="_blank") read more

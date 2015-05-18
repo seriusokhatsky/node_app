@@ -1,7 +1,8 @@
 var express = require("express"),
 	bodyParser = require("body-parser"),
 	fs = require('fs'),
-	app = express();
+	app = express(),
+	feed = require("feed-read");
 
 console.log(app);
 
@@ -11,9 +12,9 @@ var store = {
 		title: "Home page title",
 		content: "Welcome to my new Express APPlication"
 	},
-	about: {
-		title: "About Me",
-		content: "My name is..."
+	korr: {
+		title: "korr",
+		content: "Korrespondent news"
 	},
 	contacts: {
 		title: "Contact Me",
@@ -38,7 +39,8 @@ var store = {
 },
 todosFile = 'todos.txt',
 keysStore = Object.keys(store),
-todos = new Array();
+todos = new Array(),
+rssUrl = 'http://k.img.com.ua/rss/ua/mainbyday.xml';
 
 fs.readFile(todosFile, function (err, data) {
   if (err) throw err;
@@ -65,6 +67,18 @@ app.get('/todos', function(req, res) {
 		data.current = 'todos';
 		data.todos = todos;
 		res.render('todos', data);
+	});
+
+app.get('/korr', function(req, res) {
+		feed(rssUrl, function(err, articles) {
+		  if (err) throw err;
+		  	console.log(articles);
+			data = store.korr;
+			data.links = keysStore;
+			data.current = 'korr';
+			data.articles = articles;
+			res.render('korr', data);
+		});
 	});
 
 app.route('/newtodo')
