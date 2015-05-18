@@ -7,6 +7,6 @@ block content
 			each article in articles
 				article.list-group
 					.list-group-item.clearfix
-						h3(style="margin-bottom:20px;").media-heading= article.title
+						h3(style="margin-bottom:20px;").media-heading: a(href= article.link target="_blank")= article.title
 						p(style="margin-left:-10px;")!= article.content
 						a(href= article.link target="_blank") Go rorr

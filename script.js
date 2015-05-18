@@ -99,9 +99,6 @@ app.route('/remove/:remove')
 		  if (err) throw err;
 		  console.log('It\'s saved!');
 		});
-		data = store.newtodo;
-		data.links = keysStore;
-		data.current = 'newtodo';
 		res.redirect('/todos');
 	});
 
