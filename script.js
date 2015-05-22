@@ -71,7 +71,6 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.get('/todos', function(req, res) {
-
 		data = store.todos;
 		data.links = keysStore;
 		data.current = 'todos';
