@@ -1,19 +1,45 @@
 extends layout.jade
 block content
 	.row
-		.col-md-6
+		.col-md-7
 			label(for="title") TODOs list 
 			ul.list-group
 				each todo in todos
-					li.list-group-item= todo.title
-						ul.list-inline.pull-right
-							li
-								a.pull-right(href="/mark/" + todo.title) 
-									span mark 
-							li
-								a.pull-right(href="/remove/" + todo.title)
-									span remove 
-		.col-md-6
+					if todo.mark == "process"
+						li.list-group-item.list-group-item-info= todo.title
+							ul.list-inline.pull-right
+								li
+									a(href="/mark/stop/" + todo.title) 
+										span stop 
+								li
+									a(href="/mark/done/" + todo.title) 
+										span done 
+								li
+									a(href="/remove/" + todo.title)
+										span remove 
+					else if todo.mark == "done"
+						li.list-group-item.disabled= todo.title
+							ul.list-inline.pull-right
+								li
+									a(href="/mark/undone/" + todo.title) 
+										span undone 
+								li
+									a(href="/remove/" + todo.title)
+										span remove 
+					else 
+						li.list-group-item= todo.title
+							ul.list-inline.pull-right
+								li
+									a(href="/mark/process/" + todo.title) 
+										span process 
+								li
+									a(href="/mark/done/" + todo.title) 
+										span done 
+								li
+									a(href="/remove/" + todo.title)
+										span remove 
+
+		.col-md-5
 			form(action="/newtodo" method="post").form
 				.form-group
 					label(for="title") TODO title 

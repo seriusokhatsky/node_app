@@ -92,6 +92,29 @@ app.route('/newtodo')
 		res.redirect('/todos');
 	});
 
+app.route('/mark/:flag/:mark/')
+	.get(function(req, res) {
+		var mark = req.params.mark;
+		var flag = req.params.flag;
+
+		var el = todos.filter(function( obj ) {
+		  return obj.title == mark;
+		});
+
+		var index = todos.indexOf(el[0]);
+
+		if(index != -1) {
+			todos[index].mark = flag;
+		}
+
+
+		fs.writeFile(todosFile, JSON.stringify(todos), function (err) {
+		  if (err) throw err;
+		  console.log('It\'s saved!');
+		});
+		res.redirect('/todos');
+	});
+
 app.route('/remove/:remove')
 	.get(function(req, res) {
 		var remove = req.params.remove;
