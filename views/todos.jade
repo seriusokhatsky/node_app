@@ -5,9 +5,14 @@ block content
 			label(for="title") TODOs list 
 			ul.list-group
 				each todo in todos
-					li.list-group-item= todo
-						a.pull-right(href="/remove/" + todo)
-							span.lyphicon.glyphicon-search(aria-hidden="true") remove
+					li.list-group-item= todo.title
+						ul.list-inline.pull-right
+							li
+								a.pull-right(href="/mark/" + todo.title) 
+									span mark 
+							li
+								a.pull-right(href="/remove/" + todo.title)
+									span remove 
 		.col-md-6
 			form(action="/newtodo" method="post").form
 				.form-group

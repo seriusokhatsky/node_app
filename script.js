@@ -35,6 +35,7 @@ var store = {
 todosFile = 'todos.txt',
 keysStore = Object.keys(store),
 todos = new Array(),
+data,
 rssUrl = 'http://k.img.com.ua/rss/ua/mainbyday.xml';
 
 fs.readFile(todosFile, function (err, data) {
@@ -79,7 +80,10 @@ app.route('/newtodo')
 	.post(function(req, res) {
 		data = req.body;
 		if( data.title ) {
-			todos.push(data.title);
+			todos.push({
+				title: data.title,
+				mark: 'new'
+			});
 		}
 		fs.writeFile(todosFile, JSON.stringify(todos), function (err) {
 		  if (err) throw err;
@@ -91,10 +95,11 @@ app.route('/newtodo')
 app.route('/remove/:remove')
 	.get(function(req, res) {
 		var remove = req.params.remove;
-		var index = todos.indexOf(remove);
-		if (index > -1) {
-		    todos.splice(index, 1);
-		}
+
+		todos = todos.filter(function( obj ) {
+		    return obj.title !== remove;
+		});
+
 		fs.writeFile(todosFile, JSON.stringify(todos), function (err) {
 		  if (err) throw err;
 		  console.log('It\'s saved!');
@@ -105,7 +110,7 @@ app.route('/remove/:remove')
 app.get('/:page?', function(req, res) {
 	var page = req.params.page;
 	if(!page) page = 'home';
-	data = store[page];
+	var data = store[page];
 	if(!data) {
 		res.redirect('/');
 	}
