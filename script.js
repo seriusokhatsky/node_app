@@ -36,13 +36,26 @@ todosFile = 'todos.txt',
 keysStore = Object.keys(store),
 todos = new Array(),
 data,
-rssUrl = 'http://k.img.com.ua/rss/ua/mainbyday.xml';
+rssUrl = 'http://k.img.com.ua/rss/ua/mainbyday.xml',
+sortTodos;
+
+sortTodos = function() {
+
+	todos.sort(function(a, b) {
+		if(a.mark === b.mark) return 0;
+		if(a.mark == 'done') return 1;
+		if(b.mark == 'process') return 1;
+		return -1;
+	});
+}
+
 
 fs.readFile(todosFile, function (err, data) {
-  if (err) throw err;
-  if(data.toString() != '') {
-	  todos = JSON.parse(data);
-  }
+	if (err) throw err;
+	if(data.toString() != '') {
+		todos = JSON.parse(data);
+	}
+	sortTodos();
 });
 
 app.use(function(req, res, next) {
@@ -58,6 +71,7 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.get('/todos', function(req, res) {
+
 		data = store.todos;
 		data.links = keysStore;
 		data.current = 'todos';
@@ -80,11 +94,12 @@ app.route('/newtodo')
 	.post(function(req, res) {
 		data = req.body;
 		if( data.title ) {
-			todos.push({
+			todos.unshift({
 				title: data.title,
-				mark: 'new'
+				mark: 'stop'
 			});
 		}
+
 		fs.writeFile(todosFile, JSON.stringify(todos), function (err) {
 		  if (err) throw err;
 		  console.log('It\'s saved!');
@@ -106,7 +121,6 @@ app.route('/mark/:flag/:mark/')
 		if(index != -1) {
 			todos[index].mark = flag;
 		}
-
 
 		fs.writeFile(todosFile, JSON.stringify(todos), function (err) {
 		  if (err) throw err;
